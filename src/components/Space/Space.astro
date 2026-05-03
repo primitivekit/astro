@@ -1,0 +1,39 @@
+---
+import './Space.css';
+
+export type SpaceSize = 'small' | 'medium' | 'large' | number;
+export type SpaceDirection = 'horizontal' | 'vertical';
+export type SpaceAlign = 'start' | 'end' | 'center' | 'baseline';
+
+export interface Props {
+  size?: SpaceSize;
+  direction?: SpaceDirection;
+  align?: SpaceAlign;
+  wrap?: boolean;
+  class?: string;
+}
+
+const { 
+  size = 'medium',
+  direction = 'horizontal',
+  align,
+  wrap = false,
+  class: className = '',
+  ...props 
+} = Astro.props;
+
+const spaceClasses = [
+  'space',
+  `space--${direction}`,
+  typeof size === 'string' ? `space--${size}` : '',
+  align ? `space--align-${align}` : '',
+  wrap ? 'space--wrap' : '',
+  className
+].filter(Boolean).join(' ');
+
+const spaceStyles = typeof size === 'number' ? { '--space-gap': `${size}px` } : {};
+---
+
+<div class={spaceClasses} style={spaceStyles} {...props}>
+  <slot />
+</div>

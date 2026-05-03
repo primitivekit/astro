@@ -1,0 +1,36 @@
+---
+import './Card.css';
+
+export type CardVariant = 'elevated' | 'outlined' | 'filled';
+
+export interface Props {
+  variant?: CardVariant;
+  hoverable?: boolean;
+  clickable?: boolean;
+  class?: string;
+}
+
+const { 
+  variant = 'elevated', 
+  hoverable = false, 
+  clickable = false,
+  class: className = '',
+  ...props 
+} = Astro.props;
+
+const cardClasses = [
+  'card',
+  `card--${variant}`,
+  hoverable ? 'card--hoverable' : '',
+  clickable ? 'card--clickable' : '',
+  className
+].filter(Boolean).join(' ');
+---
+
+<div 
+  class={cardClasses}
+  role={clickable ? 'button' : undefined}
+  tabindex={clickable ? 0 : undefined}
+  {...props}>
+  <slot />
+</div>

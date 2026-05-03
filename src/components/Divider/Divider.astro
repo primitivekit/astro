@@ -1,0 +1,39 @@
+---
+import './Divider.css';
+
+export type DividerOrientation = 'horizontal' | 'vertical';
+export type DividerVariant = 'solid' | 'dashed' | 'dotted';
+
+export interface Props {
+  orientation?: DividerOrientation;
+  variant?: DividerVariant;
+  label?: string;
+  class?: string;
+}
+
+const { 
+  orientation = 'horizontal',
+  variant = 'solid',
+  label,
+  class: className = '',
+  ...props 
+} = Astro.props;
+
+const dividerClasses = [
+  'divider',
+  `divider--${orientation}`,
+  `divider--${variant}`,
+  label ? 'divider--with-label' : '',
+  className
+].filter(Boolean).join(' ');
+---
+
+{label && orientation === 'horizontal' ? (
+  <div class={dividerClasses} role="separator" {...props}>
+    <hr class="divider__line" />
+    <span class="divider__label">{label}</span>
+    <hr class="divider__line" />
+  </div>
+) : (
+  <hr class={dividerClasses} role="separator" aria-orientation={orientation} {...props} />
+)}

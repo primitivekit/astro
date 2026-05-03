@@ -1,0 +1,42 @@
+---
+import './Avatar.css';
+
+export type AvatarSize = 'small' | 'medium' | 'large' | number;
+export type AvatarShape = 'circle' | 'square';
+
+export interface Props {
+  src?: string;
+  alt?: string;
+  size?: AvatarSize;
+  shape?: AvatarShape;
+  class?: string;
+}
+
+const { 
+  src,
+  alt = 'Avatar',
+  size = 'medium',
+  shape = 'circle',
+  class: className = '',
+  ...props 
+} = Astro.props;
+
+const avatarClasses = [
+  'avatar',
+  `avatar--${shape}`,
+  typeof size === 'string' ? `avatar--${size}` : '',
+  className
+].filter(Boolean).join(' ');
+
+const avatarStyles = typeof size === 'number' ? { '--avatar-size': `${size}px` } : {};
+---
+
+<div class={avatarClasses} style={avatarStyles} {...props}>
+  {src ? (
+    <img src={src} alt={alt} class="avatar__image" />
+  ) : (
+    <span class="avatar__text">
+      <slot>{alt.charAt(0).toUpperCase()}</slot>
+    </span>
+  )}
+</div>

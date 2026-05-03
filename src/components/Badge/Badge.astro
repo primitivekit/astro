@@ -1,0 +1,32 @@
+---
+import './Badge.css';
+
+export type BadgeVariant = 'solid' | 'subtle' | 'outline';
+export type BadgeColorScheme = 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+export type BadgeSize = 'small' | 'medium' | 'large';
+
+export interface Props {
+  variant?: BadgeVariant;
+  colorScheme?: BadgeColorScheme;
+  size?: BadgeSize;
+  class?: string;
+}
+
+const { 
+  variant = 'solid', 
+  colorScheme = 'primary',
+  size = 'medium',
+  class: className = '',
+  ...props 
+} = Astro.props;
+
+const badgeClasses = [
+  'badge',
+  `badge--${variant}`,
+  `badge--${colorScheme}`,
+  `badge--${size}`,
+  className
+].filter(Boolean).join(' ');
+---
+
+<span class={badgeClasses} {...props}><slot /></span>
